@@ -10,6 +10,7 @@ class itemDashboard extends StatefulWidget {
 }
 
 class _itemDashboardState extends State<itemDashboard> {
+  TextEditingController _inputController = TextEditingController();
   final List<Product> products = [
     Product(id: 1, name: 'Produk 1', price: 10000),
     Product(id: 2, name: 'Produk 2', price: 20000),
@@ -43,24 +44,47 @@ class _itemDashboardState extends State<itemDashboard> {
           )
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (context, int index) {
-          return Container(
-            child: ListTile(
-              leading: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('${products[index].id}'),
-              ),
-              title: Text(products[index].name),
-              subtitle: Text('Harga: Rp ${products[index].price}'),
-              trailing: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              controller: _inputController,
+              decoration: InputDecoration(
+                  labelText: 'Filter Produk',
+                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.clear,
+                    ),
+                    onPressed: () {
+                      _inputController.clear();
+                    },
+                  )),
             ),
-          );
-        },
-        itemCount: products.length,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, int index) {
+                return Container(
+                  child: ListTile(
+                    leading: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('${products[index].id}'),
+                    ),
+                    title: Text(products[index].name),
+                    subtitle: Text('Harga: Rp ${products[index].price}'),
+                    trailing: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
+                );
+              },
+              itemCount: products.length,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
